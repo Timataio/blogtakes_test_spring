@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  </head>
+  <body>
+	
+	<h3>Reactive demo. Wait 10 seconds to see results.</h3>
+	
+	<div class="container">
+	  <div class="row">
+		<div class="col-sm">
+		  <table class="table table-bordered">
+			<thead>
+			  <tr>
+			    <td>Greeting</td>
+			    <td>Inventor</td>
+			  </tr>
+			</thead>
+			<tbody>
+		      <tr th:each="greeting: ${greetings}">
+			    <td th:text="${greeting.text}"></td>
+			    <td th:text="${greeting.inventor}"></td>
+		      </tr>
+		    </tbody>
+	      </table>
+		</div>
+	  </div>
+	</div>
+	
+	<div>
+	  <form action="#" th:action="@{/}" th:object="${greeting}" method="post">
+	    <label for="greeting">Add a greeting to the list:</label><br>
+	    <input type="text" th:field="*{text}"><br>
+	    <input type="submit" value="Submit">
+	  </form>
+	</div>
+	<script th:src="@{/resources/js/bootstrap.bundle.min.js}"></script>
+  </body>
+</html>
