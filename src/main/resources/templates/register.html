@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+	<meta charset="utf-8">
+	<link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet">
+  </head>
+  <body>
+	<h2>Register</h2>
+	  <form action="#" th:action="@{/register}" th:object="${user}" method="post">
+		<table>
+		  <tr>
+			<td>
+			  <label>email</label>
+			</td>
+			<td>
+			  <input type="text" th:field="*{email}">
+			</td>
+		  </tr>
+		  <tr>
+			<td>
+			  <label>Username</label>
+			</td>
+			<td>
+			  <input type="text" th:field="*{username}">
+			</td>
+		  </tr>
+		  <tr>
+			<td>
+			  <label for>Password</label>
+			</td>
+			<td>
+			  <input type="password" th:field="*{password}">
+			</td>
+		  </tr>
+		  <tr>
+			<td>
+			  <label>Confirm Password</label>
+			</td>
+			<td>
+			  <input type="password" th:field="*{passwordCopy}">
+			</td>
+		  </tr>
+		</table>
+	    <input type="submit" value="Submit">
+	  </form>
+	<script th:src="@{/resources/js/bootstrap.bundle.min.js}"></script>
+  </body>
+</html>

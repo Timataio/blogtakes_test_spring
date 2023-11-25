@@ -3,7 +3,7 @@ package edu.blogtakes.demo;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Component;
+import edu.blogtakes.demo.model.Greeting;
 
 public class GreetingHandler {
 	private List<Greeting> greetings;

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+	<meta charset="utf-8">
+	<link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet">
+  </head>
+  <body>
+	<h3>Please enter the 6-digit verification code sent to your email.</h3>
+	  <form action="#" th:action="@{/verify}" method="post">
+	    <input type="text">
+	    <input type="submit" text="submit">
+	  </form>
+	<script th:src="@{/resources/js/bootstrap.bundle.min.js}"></script>
+  </body>
+</html>
