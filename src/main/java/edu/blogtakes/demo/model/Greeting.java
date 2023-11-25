@@ -1,4 +1,4 @@
-package edu.blogtakes.demo;
+package edu.blogtakes.demo.model;
 
 public class Greeting {
 	private String text;
