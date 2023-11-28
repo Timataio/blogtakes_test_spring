@@ -6,8 +6,8 @@
   </head>
   <body>
 	<h3>Please enter the 6-digit verification code sent to your email.</h3>
-	  <form action="#" th:action="@{/verify}" method="post">
-	    <input type="text">
+	  <form action="#" th:action="@{/verify}" th:object="${code}" method="post">
+	    <input type="text" th:field="*{code}">
 	    <input type="submit" text="submit">
 	  </form>
 	<script th:src="@{/resources/js/bootstrap.bundle.min.js}"></script>
