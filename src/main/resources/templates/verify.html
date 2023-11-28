@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
 	<meta charset="utf-8">
-	<link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet">
+	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
   </head>
   <body>
 	<h3>Please enter the 6-digit verification code sent to your email.</h3>
@@ -10,6 +10,6 @@
 	    <input type="text" th:field="*{code}">
 	    <input type="submit" text="submit">
 	  </form>
-	<script th:src="@{/resources/js/bootstrap.bundle.min.js}"></script>
+	<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
   </body>
 </html>

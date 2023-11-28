@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
   <head>
 	<meta charset="utf-8">
 	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
@@ -19,9 +19,9 @@
 			  </tr>
 			</thead>
 			<tbody>
-		      <tr th:each="greeting: ${greetings}">
-			    <td th:text="${greeting.text}"></td>
-			    <td th:text="${greeting.inventor}"></td>
+		      <tr data-th-each="greeting: ${greetings}">
+			    <td data-th-text="${greeting.text}"></td>
+			    <td data-th-text="${greeting.inventor}"></td>
 		      </tr>
 		    </tbody>
 	      </table>
@@ -30,12 +30,12 @@
 	</div>
 	
 	<div>
-	  <form action="#" th:action="@{/}" th:object="${greeting}" method="post">
-	    <label for="greeting">Add a greeting to the list:</label><br>
-	    <input type="text" th:field="*{text}"><br>
+	  <form action="#" th:action="@{/}" data-th-object="${greeting}" method="post">
+	    <label>Add a greeting to the list:</label><br>
+	    <input type="text" data-th-field="*{text}"><br>
 	    <input type="submit" value="Submit">
 	  </form>
 	</div>
-	<script th:src="@{/resources/js/bootstrap.bundle.min.js}"></script>
+	<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
   </body>
 </html>

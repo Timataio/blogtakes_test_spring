@@ -44,12 +44,27 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String postRegister(FBOUser fboUser, WebSession session) {
+    public String postRegister(@ModelAttribute FBOUser fboUser, WebSession session) {
+        addAccount(fboUser);
         String code = generateRandomCode();
         sendEmailCode(fboUser.getEmail(), code);
         storeEmailCode(fboUser.getEmail(), code);
         session.getAttributes().put("email", fboUser.getEmail());
         return "redirect:/verify";
+    }
+
+    public void addAccount(FBOUser fboUser) {
+        R2dbcEntityTemplate template = new R2dbcEntityTemplate(connFactory);
+
+        template.getDatabaseClient()
+                .sql("INSERT INTO auth.accounts(email, username, password, active) VALUES (:email, :username, :password, false) ON CONFLICT(email) DO UPDATE SET username = :username, password = :password")
+                .bind("email", fboUser.getEmail())
+                .bind("username", fboUser.getUsername())
+                .bind("password", "unencrypted:" + fboUser.getPassword())
+
+                .fetch()
+                .rowsUpdated()
+                .subscribe(System.out::println);
     }
 
     private String generateRandomCode() {
@@ -74,11 +89,12 @@ public class AuthController {
         }
 
     }
+
     private void storeEmailCode(String email, String code) {
         R2dbcEntityTemplate template = new R2dbcEntityTemplate(connFactory);
 
         template.getDatabaseClient()
-                .sql("INSERT INTO auth.codes(email, code) VALUES (:email, :code)")
+                .sql("INSERT INTO auth.codes(email, code) VALUES (:email, :code) ON CONFLICT(email) DO UPDATE SET code = :code")
                 .bind("email", email)
                 .bind("code", code)
 
@@ -96,7 +112,7 @@ public class AuthController {
     public Mono<ResponseEntity<Object>> postVerify(@ModelAttribute FBOCode codeObject, WebSession session) {
         String code = codeObject.getCode();
         Mono<Object> codeMono = getCode(session.getAttribute("email"));
-        return routePostVerify(codeMono, code);
+        return routePostVerify(codeMono, code, session.getAttribute("email"));
     }
 
     //Returns a Row containing the current user's authentication code from the database
@@ -112,10 +128,11 @@ public class AuthController {
     }
 
     //Returns a Mono<ResponseEntity> which contains the appropriate route based on the given inputCode
-    private Mono<ResponseEntity<Object>> routePostVerify(Mono<Object> dbCodeWrap, String inputCode) {
+    private Mono<ResponseEntity<Object>> routePostVerify(Mono<Object> dbCodeWrap, String inputCode, String email) {
         return dbCodeWrap.map(m -> {
             if (m.equals(inputCode)) {
                 System.out.println("confirmed route");
+                activateAccount(email);
                 return ResponseEntity.status(HttpStatus.SEE_OTHER).location(URI.create("/confirmed")).build();
             }
             else {
@@ -123,6 +140,18 @@ public class AuthController {
                 return ResponseEntity.status(HttpStatus.SEE_OTHER).location(URI.create("/verify")).build();
             }
         });
+    }
+
+    private void activateAccount(String email) {
+        R2dbcEntityTemplate template = new R2dbcEntityTemplate(connFactory);
+
+        template.getDatabaseClient()
+                .sql("UPDATE auth.accounts SET active = true WHERE email = :email")
+                .bind("email", email)
+
+                .fetch()
+                .rowsUpdated()
+                .subscribe(System.out::println);
     }
 
     @GetMapping("/confirmed")

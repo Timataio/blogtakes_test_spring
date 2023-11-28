@@ -47,7 +47,6 @@ public class GreetingController {
 	public String postGreeting(@ModelAttribute Greeting greeting) {
 		greeting.setInventor("You, the user");
 		greetings.add(greeting);
-		System.out.println("DEBUG: Greeting added");
 		return "redirect:/";
 	}
 	
